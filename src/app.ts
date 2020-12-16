@@ -1,0 +1,11 @@
+import express from 'express';
+import {AppRouter} from './routes';
+import {appConfig} from './config';
+import {errorHandler} from './middleware/error-handler';
+import {NotFoundError} from './util';
+export const app: express.Application = express();
+app.use(express.json());
+app.use('/api', AppRouter);
+app.use((_req, _res, next) => next(new NotFoundError()));
+app.use(errorHandler);
+app.set('port', appConfig.port);
